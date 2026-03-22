@@ -131,12 +131,12 @@ export function TaskCard({
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
       <Card
-        className={`p-3 mb-2 group ${
+        className={`p-3 mb-2 group bg-muted/40 dark:bg-muted/20 ${
           isActive
             ? overdue
               ? 'ring-2 ring-orange-500 bg-orange-500/10'
               : 'ring-2 ring-green-500 bg-green-500/10'
-            : ''
+            : 'hover:bg-muted/70 dark:hover:bg-muted/40'
         } ${task.column === 'completed' ? 'opacity-60' : ''}`}
       >
         {/* Drag handle + Title */}

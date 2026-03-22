@@ -8,6 +8,7 @@ const COLOR_MAP: Record<FaviconColor, string> = {
 };
 
 let currentFavicon: FaviconColor | null = null;
+const FAVICON_ID = 'dynamic-favicon';
 
 export function setFavicon(color: FaviconColor) {
   if (color === currentFavicon) return;
@@ -24,13 +25,22 @@ export function setFavicon(color: FaviconColor) {
   ctx.fillStyle = COLOR_MAP[color];
   ctx.fill();
 
-  const link =
-    (document.querySelector("link[rel*='icon']") as HTMLLinkElement) ||
-    document.createElement('link');
-  link.type = 'image/png';
-  link.rel = 'icon';
-  link.href = canvas.toDataURL('image/png');
-  document.head.appendChild(link);
+  const href = canvas.toDataURL('image/png');
+
+  // Remove any existing favicons so ours takes priority
+  document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach((el) => {
+    if (el.id !== FAVICON_ID) el.remove();
+  });
+
+  let link = document.getElementById(FAVICON_ID) as HTMLLinkElement | null;
+  if (!link) {
+    link = document.createElement('link');
+    link.id = FAVICON_ID;
+    link.rel = 'icon';
+    link.type = 'image/png';
+    document.head.appendChild(link);
+  }
+  link.href = href;
 }
 
 export function setTabTitle(title: string) {
